@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: auth
+      POSTGRES_PASSWORD: auth
+      POSTGRES_DB: auth
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth_pg:/var/lib/postgresql/data
+
+  auth:
+    build: .
+    ports:
+      - "8090:8090"
+    environment:
+      AUTH_DATABASE_URL: postgresql+psycopg://auth:auth@db:5432/auth
+      AUTH_HOST: 0.0.0.0
+      AUTH_PORT: 8090
+      AUTH_CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173,http://localhost:8787
+      AUTH_SPA_CALLBACK_URL: http://localhost:5173/auth/callback
+      AUTH_DEFAULT_AUDIENCES: ${AUTH_DEFAULT_AUDIENCES:-}
+      AUTH_GOOGLE_CLIENT_ID: ${AUTH_GOOGLE_CLIENT_ID:-}
+      AUTH_GOOGLE_CLIENT_SECRET: ${AUTH_GOOGLE_CLIENT_SECRET:-}
+      AUTH_GITHUB_CLIENT_ID: ${AUTH_GITHUB_CLIENT_ID:-}
+      AUTH_GITHUB_CLIENT_SECRET: ${AUTH_GITHUB_CLIENT_SECRET:-}
+    depends_on:
+      - db
+
+volumes:
+  auth_pg:

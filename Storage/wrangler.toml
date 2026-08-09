@@ -1,0 +1,8 @@
+name = "pisigma-storage"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+STORAGE_BUCKET_NAME = "pisigma-dev-bucket"
+STORAGE_BASE_URL = "http://127.0.0.1:8790"

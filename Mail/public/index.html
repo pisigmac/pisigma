@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PiSigma Mail</title>
+    <style>
+      :root {
+        --ink: #10231c;
+        --muted: #4a6358;
+        --sea: #1a6b55;
+        --bg: #eef6f1;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(ellipse at top left, #cfe8da, var(--bg));
+        line-height: 1.55;
+        min-height: 100vh;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 1.25rem 4rem;
+      }
+      h1 {
+        font-family: "IBM Plex Serif", Georgia, serif;
+        font-weight: 500;
+        font-size: 2.4rem;
+        margin: 0 0 0.5rem;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+      }
+      code,
+      pre {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.88rem;
+      }
+      pre {
+        background: rgba(16, 35, 28, 0.92);
+        color: #e8f5ef;
+        padding: 1rem 1.1rem;
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+      a {
+        color: var(--sea);
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>PiSigma Mail</h1>
+      <p class="lede">
+        Shared transactional email for PiSigma / PlexApps — SMTP-backed product.
+        No Resend. Admin via token or pisigma-auth (not Clerk).
+      </p>
+      <ul>
+        <li><a href="/health">/health</a></li>
+        <li><a href="/v1/openapi.json">/v1/openapi.json</a></li>
+        <li><code>POST /v1/send</code> with <code>Authorization: Bearer pm_live_…</code></li>
+        <li>Admin: <code>X-Admin-Token</code> on <code>/v1/admin/*</code></li>
+      </ul>
+      <h2>Send</h2>
+      <pre>curl -X POST "$MAIL_URL/v1/send" \
+  -H "Authorization: Bearer pm_live_…" \
+  -H "Idempotency-Key: sub_123" \
+  -H "Content-Type: application/json" \
+  -d '{"to":"you@example.com","subject":"Hi","text":"Hello"}'</pre>
+    </main>
+  </body>
+</html>

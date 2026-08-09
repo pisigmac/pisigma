@@ -1,0 +1,7 @@
+name = "pisigma-search"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SEARCH_INDEX_NAME = "default_index"

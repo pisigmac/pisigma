@@ -1,0 +1,8 @@
+name = "pisigma-scheduler"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SCHEDULER_ENV = "development"
+SCHEDULER_MAX_CONCURRENT_JOBS = "10"

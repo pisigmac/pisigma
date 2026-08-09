@@ -1,0 +1,7 @@
+name = "pisigma-inventory"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+INVENTORY_ENV = "development"

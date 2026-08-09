@@ -1,0 +1,24 @@
+{
+  "name": "pisigma-webhooks",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PiSigma shared outbound webhooks microservice",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:local": "wrangler d1 migrations apply pisigma-webhooks --local",
+    "db:remote": "wrangler d1 migrations apply pisigma-webhooks --remote",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.7.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250224.0",
+    "typescript": "^5.7.3",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.120.0"
+  }
+}

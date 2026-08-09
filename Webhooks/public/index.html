@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PiSigma Webhooks</title>
+    <style>
+      :root {
+        --ink: #1a1f2e;
+        --muted: #5a6478;
+        --accent: #0b6e99;
+        --bg: #eef3f8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(ellipse at top right, #c5dcec, var(--bg));
+        line-height: 1.55;
+        min-height: 100vh;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 1.25rem 4rem;
+      }
+      h1 {
+        font-family: "IBM Plex Serif", Georgia, serif;
+        font-weight: 500;
+        font-size: 2.4rem;
+        margin: 0 0 0.5rem;
+      }
+      .lede {
+        color: var(--muted);
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+      }
+      code,
+      pre {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: 0.88rem;
+      }
+      pre {
+        background: rgba(26, 31, 46, 0.92);
+        color: #e8f0f8;
+        padding: 1rem 1.1rem;
+        border-radius: 10px;
+        overflow-x: auto;
+      }
+      a {
+        color: var(--accent);
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>PiSigma Webhooks</h1>
+      <p class="lede">
+        Shared outbound webhook delivery spine for PiSigma / PlexApps products —
+        signed payloads, retries, and delivery logs. Same spine role as Auth and Mail.
+      </p>
+      <ul>
+        <li><a href="/health">/health</a></li>
+        <li><a href="/v1/openapi.json">/v1/openapi.json</a></li>
+        <li><code>POST /v1/endpoints</code> · <code>POST /v1/deliver</code> with <code>pw_live_…</code></li>
+        <li>Admin: <code>X-Admin-Token</code> on <code>/v1/admin/*</code></li>
+      </ul>
+      <h2>Deliver</h2>
+      <pre>curl -X POST "$WEBHOOKS_URL/v1/deliver" \
+  -H "Authorization: Bearer pw_live_…" \
+  -H "Idempotency-Key: evt_123" \
+  -H "Content-Type: application/json" \
+  -d '{"event":"form.submitted","data":{"id":"1"},"endpoint_id":"ep_…"}'</pre>
+      <h2>Receiver headers</h2>
+      <pre>X-Pisigma-Signature: sha256=&lt;hmac hex of body&gt;
+X-Pisigma-Event: form.submitted
+X-Pisigma-Delivery: dlv_…</pre>
+    </main>
+  </body>
+</html>

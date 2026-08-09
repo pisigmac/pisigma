@@ -1,0 +1,29 @@
+name = "pisigma-mail"
+main = "src/index.ts"
+compatibility_date = "2025-10-08"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pisigma-mail"
+database_id = "00000000-0000-0000-0000-000000000003"
+migrations_dir = "migrations"
+
+# Secrets:
+#   MAIL_ADMIN_TOKEN
+#   SMTP_PASS
+# Vars:
+#   MAIL_PROVIDER=smtp
+#   MAIL_FROM=PlexApps <noreply@plexapps.com>
+#   SMTP_HOST=smtp.yourdomain.com
+#   SMTP_PORT=587
+#   SMTP_USER=...
+#   SMTP_STARTTLS=1
+# Optional Auth/ (not Clerk):
+#   MAIL_AUTH_JWKS_URL=https://auth…/.well-known/jwks.json
+#   MAIL_AUTH_ISSUER=...
+#   MAIL_AUTH_AUDIENCE=mail
