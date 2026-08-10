@@ -91,5 +91,10 @@ source "$ROOT/Tools/shell-lib/common.sh"
 - `pisigma_security_check [dir]` — checks static security patterns (`eval()`, unescaped dynamic evaluation, `target="_blank"` without `rel="noopener noreferrer"`) and runs typechecks.
 - `pisigma_check_outdated <dir>` — runs `npm outdated` to track stale packages.
 
-### Docker Helpers
-- `pisigma_docker_clean`
+### Universal Docker Utilities
+- `pisigma_docker_compose_up [dir] [profile]` — orchestrates multi-container services with optional compose profile flags.
+- `pisigma_docker_compose_down [dir]` — gracefully stops containers and prunes orphan volumes.
+- `pisigma_docker_healthcheck <name> <url> [timeout]` — polls container HTTP health endpoint until ready.
+- `pisigma_docker_generate_dockerfile <node|python> [dir]` — auto-generates security-hardened, multi-stage production Dockerfile templates.
+- `pisigma_docker_clean_all` — performs deep system pruning of unused Docker images, containers, and buildx caches.
+

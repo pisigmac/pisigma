@@ -303,6 +303,125 @@ pisigma_docker_clean() {
   pisigma_log info "Cleaned stopped Docker containers and unused volumes"
 }
 
+pisigma_docker_clean_all() {
+  pisigma_require_cmd docker
+  pisigma_log info "Running deep Docker cleanup (containers, images, buildx cache, volumes)..."
+  docker system prune -af --volumes >/dev/null 2>&1 || true
+  pisigma_log info "Universal Docker cleanup complete."
+}
+
+pisigma_docker_compose_up() {
+  local dir="${1:-$PWD}"
+  local profile="${2:-all}"
+  local flags="${3:--d}"
+  pisigma_require_cmd docker
+  pisigma_log info "Starting Docker Compose services in $dir (profile: $profile)..."
+  if [[ -f "$dir/docker-compose.yml" || -f "$dir/docker-compose.yaml" ]]; then
+    if [[ "$profile" == "all" || "$profile" == "none" ]]; then
+      pisigma_run_in_dir "$dir" docker compose up $flags
+    else
+      pisigma_run_in_dir "$dir" docker compose --profile "$profile" up $flags
+    fi
+    pisigma_log info "Docker Compose up completed for $dir"
+  else
+    pisigma_log error "No docker-compose.yml found in $dir"
+    return 1
+  fi
+}
+
+pisigma_docker_compose_down() {
+  local dir="${1:-$PWD}"
+  pisigma_require_cmd docker
+  pisigma_log info "Stopping Docker Compose services in $dir..."
+  if [[ -f "$dir/docker-compose.yml" || -f "$dir/docker-compose.yaml" ]]; then
+    pisigma_run_in_dir "$dir" docker compose down -v --remove-orphans
+    pisigma_log info "Docker Compose down completed for $dir"
+  else
+    pisigma_log error "No docker-compose.yml found in $dir"
+    return 1
+  fi
+}
+
+pisigma_docker_healthcheck() {
+  local name="$1"
+  local url="$2"
+  local timeout="${3:-30}"
+  local elapsed=0
+  pisigma_log info "Checking Docker health for $name at $url (timeout ${timeout}s)..."
+  while ! curl -sf "$url" >/dev/null 2>&1; do
+    if [[ $elapsed -ge $timeout ]]; then
+      pisigma_log error "Docker healthcheck timeout for $name at $url"
+      return 1
+    fi
+    sleep 1
+    ((elapsed++)) || true
+  done
+  pisigma_log info "Docker container $name is healthy! ($url)"
+}
+
+pisigma_docker_generate_dockerfile() {
+  local lang="${1:-node}"
+  local target_dir="${2:-$PWD}"
+  local target_file="$target_dir/Dockerfile"
+
+  if [[ -f "$target_file" ]]; then
+    pisigma_log info "Dockerfile already exists in $target_dir"
+    return 0
+  fi
+
+  pisigma_log info "Generating production $lang Dockerfile in $target_dir..."
+
+  case "$lang" in
+    node)
+      cat << 'EOF' > "$target_file"
+# Production Multi-Stage Dockerfile for Node.js / Hono Microservices
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build 2>/dev/null || true
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
+COPY --from=builder /app ./
+USER nextjs
+EXPOSE 8787
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:8787/health || exit 1
+CMD ["npm", "run", "dev"]
+EOF
+      ;;
+    python)
+      cat << 'EOF' > "$target_file"
+# Production Multi-Stage Dockerfile for Python / FastAPI Microservices
+FROM python:3.10-slim AS builder
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends gcc python3-dev && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.10-slim AS runner
+WORKDIR /app
+COPY --from=builder /install /usr/local
+COPY . .
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+EXPOSE 8090
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health')" || exit 1
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8090"]
+EOF
+      ;;
+    *)
+      pisigma_log error "Unsupported language for Dockerfile generation: $lang (supported: node, python)"
+      return 1
+      ;;
+  esac
+  pisigma_log info "Generated $target_file"
+}
+
+
 pisigma_trap_exit() {
   local callback="$1"
   trap "$callback" EXIT
