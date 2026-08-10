@@ -473,6 +473,46 @@ pisigma_bootstrap_shared_venv() {
   pisigma_log info "Shared Python virtual environment ready at $venv_path"
 }
 
+pisigma_create_deduped_venv() {
+  local target_dir="$1"
+  local strategy="${2:-pth}"
+  local root_dir="${3:-$PWD}"
+  local shared_venv="$root_dir/.pisigma/shared_venv"
+
+  if [[ ! -d "$target_dir" ]]; then
+    pisigma_log error "Target directory does not exist: $target_dir"
+    return 1
+  fi
+
+  pisigma_log info "Creating deduplicated Python venv in $target_dir (strategy: $strategy)..."
+
+  if [[ "$strategy" == "uv" ]] && command -v uv >/dev/null 2>&1; then
+    uv venv "$target_dir/.venv"
+    pisigma_log info "Created venv using uv hardlink cache in $target_dir/.venv"
+    return 0
+  fi
+
+  pisigma_bootstrap_shared_venv "$shared_venv"
+
+  if [[ ! -d "$target_dir/.venv" ]]; then
+    python3 -m venv "$target_dir/.venv"
+  fi
+
+  local proj_sp
+  proj_sp="$(find "$target_dir/.venv/lib" -type d -name "site-packages" 2>/dev/null | head -n1)"
+  local shared_sp
+  shared_sp="$(find "$shared_venv/lib" -type d -name "site-packages" 2>/dev/null | head -n1)"
+
+  if [[ -n "$proj_sp" && -n "$shared_sp" ]]; then
+    echo "$shared_sp" > "$proj_sp/.pisigma_shared.pth"
+    pisigma_log info "Injected shared site-packages link into $proj_sp/.pisigma_shared.pth"
+    pisigma_log info "Virtual environment ready in $target_dir/.venv (reusing packages from $shared_venv)"
+  else
+    pisigma_log warn "Could not locate site-packages in $target_dir/.venv"
+  fi
+}
+
+
 pisigma_prune_caches() {
   local root_dir="${1:-$PWD}"
   pisigma_log info "Pruning temporary build caches, __pycache__, .pytest_cache, and .wrangler in $root_dir..."
