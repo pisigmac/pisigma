@@ -1,0 +1,6 @@
+name = "pisigma-schemaregistry"
+main = "src/index.ts"
+compatibility_date = "2023-12-01"
+
+[dev]
+port = 8840

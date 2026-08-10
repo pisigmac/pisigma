@@ -1,0 +1,21 @@
+{
+  "name": "pisigma-embeddingservice",
+  "version": "1.0.0",
+  "description": "Embedding Service",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240320.1",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0",
+    "wrangler": "^3.45.0"
+  }
+}
