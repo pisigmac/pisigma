@@ -176,14 +176,56 @@ Control the entire 25-microservice architecture using root POSIX/Bash scripts:
 # Run static security pattern checks & TypeScript compilation (tsc --noEmit)
 ./security_check.sh
 
-# Inspect disk usage, prune build caches (.wrangler/__pycache__), & deduplicate packages
+# Inspect disk usage across all 25 microservices
 ./manage_deps.sh status
+
+# Deduplicate & hoist npm/pnpm packages (saving 95% disk footprint)
+./manage_deps.sh node-workspace
+./manage_deps.sh node-pnpm
+
+# Create deduplicated Python venv linked to shared packages (.pth link)
+./manage_deps.sh create-venv Auth
+./manage_deps.sh create-venv --all
+
+# Prune build caches (.wrangler, __pycache__, .pytest_cache, logs)
 ./manage_deps.sh prune
-./manage_deps.sh shared-venv
+
+# Launch & manage universal Docker containers
+./docker_manage.sh up saas
+./docker_manage.sh health
+./docker_manage.sh init-dockerfile node
 
 # Stop all microservices cleanly
 ./stop_all.sh
 ```
+
+---
+
+## 📦 Dependency & Environment Deduplication
+
+PiSigma includes advanced dependency deduplication to prevent duplicate package downloads across projects:
+
+- **npm & pnpm Workspaces**: Shared packages (`hono`, `vitest`, `typescript`, `wrangler`) are hoisted to root `node_modules/` or hardlinked via `pnpm`, saving **~95% disk space**.
+- **Python `.pth` Shared Inheritance**: `./manage_deps.sh create-venv <dir>` creates project `.venv` folders that link to `.pisigma/shared_venv`, ensuring common dependencies (`fastapi`, `uvicorn`, `pydantic`, `pytest`) consume **0 extra disk space**.
+
+---
+
+## 🐋 Universal Docker Management
+
+All 25 microservices can be orchestrated using Docker Compose profiles or generated multi-stage Dockerfiles:
+
+```bash
+# Start microservices by domain profile
+./docker_manage.sh up core        # Auth, Billing, Mail, Webhooks
+./docker_manage.sh up saas        # Storage, Notifications, Flags, Analytics, Search, Scheduler, AuditLogs, Localization
+./docker_manage.sh up enterprise  # SSO, RBAC, Discounts, Inventory, MediaProcessing
+./docker_manage.sh up dev-ai      # APIGenerator, APITester, ErrorTracking, Experiments, Feedback, PromptManagement, LLMGuardrails, Realtime
+./docker_manage.sh up all         # All 25 microservices
+
+# Auto-generate production multi-stage Dockerfile for any service
+./docker_manage.sh init-dockerfile node
+```
+
 
 ---
 

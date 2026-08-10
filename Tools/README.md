@@ -91,10 +91,12 @@ source "$ROOT/Tools/shell-lib/common.sh"
 - `pisigma_security_check [dir]` — checks static security patterns (`eval()`, unescaped dynamic evaluation, `target="_blank"` without `rel="noopener noreferrer"`) and runs typechecks.
 - `pisigma_check_outdated <dir>` — runs `npm outdated` to track stale packages.
 
-### Universal Docker Utilities
-- `pisigma_docker_compose_up [dir] [profile]` — orchestrates multi-container services with optional compose profile flags.
-- `pisigma_docker_compose_down [dir]` — gracefully stops containers and prunes orphan volumes.
-- `pisigma_docker_healthcheck <name> <url> [timeout]` — polls container HTTP health endpoint until ready.
-- `pisigma_docker_generate_dockerfile <node|python> [dir]` — auto-generates security-hardened, multi-stage production Dockerfile templates.
-- `pisigma_docker_clean_all` — performs deep system pruning of unused Docker images, containers, and buildx caches.
+### Dependency & Environment Management
+- `pisigma_bootstrap_shared_venv [path]` — bootstraps a single central Python virtual environment for shared dependencies.
+- `pisigma_create_deduped_venv <target_dir>` — creates a project `.venv` with `.pth` linking to `shared_venv`, ensuring zero duplicate disk space.
+- `pisigma_bootstrap_node_workspace [dir]` — hoists shared npm dependencies (`hono`, `vitest`, `typescript`, `wrangler`) to root `node_modules`.
+- `pisigma_bootstrap_pnpm [dir]` — bootstraps pnpm workspace using global hardlink store.
+- `pisigma_report_disk_usage [dir]` — reports real-time `node_modules` and `venv` disk consumption per microservice.
+- `pisigma_prune_caches [dir]` — prunes `.wrangler`, `__pycache__`, `.pytest_cache`, and build artifacts.
+
 
