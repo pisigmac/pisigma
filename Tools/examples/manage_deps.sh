@@ -5,7 +5,9 @@
 #   ./manage_deps.sh prune               - Clean .wrangler, __pycache__, .pytest_cache, logs
 #   ./manage_deps.sh shared-venv         - Create/update single shared Python virtualenv (.pisigma/shared_venv)
 #   ./manage_deps.sh create-venv <dir>   - Create deduplicated project venv linked to shared packages
-#   ./manage_deps.sh dedupe              - Clean npm cache and report optimization opportunities
+#   ./manage_deps.sh node-workspace      - Bootstrap npm workspaces to hoist shared packages to root node_modules
+#   ./manage_deps.sh node-pnpm           - Bootstrap pnpm workspace hardlink store
+#   ./manage_deps.sh dedupe              - Clean npm cache and run package deduplication
 
 set -euo pipefail
 
@@ -40,6 +42,12 @@ case "$action" in
       pisigma_create_deduped_venv "$ROOT/$target" "pth" "$ROOT"
     fi
     ;;
+  node-workspace)
+    pisigma_bootstrap_node_workspace "$ROOT"
+    ;;
+  node-pnpm)
+    pisigma_bootstrap_pnpm "$ROOT"
+    ;;
   dedupe)
     pisigma_log info "Cleaning global npm cache and running npm package deduplication..."
     npm cache clean --force 2>/dev/null || true
@@ -52,7 +60,7 @@ case "$action" in
     pisigma_log info "NPM package deduplication complete."
     ;;
   *)
-    echo "Usage: ./manage_deps.sh {status|prune|shared-venv|create-venv <dir|--all>|dedupe}"
+    echo "Usage: ./manage_deps.sh {status|prune|shared-venv|create-venv <dir|--all>|node-workspace|node-pnpm|dedupe}"
     exit 1
     ;;
 esac

@@ -551,4 +551,29 @@ pisigma_report_disk_usage() {
   echo ""
 }
 
+pisigma_bootstrap_node_workspace() {
+  local root_dir="${1:-$PWD}"
+  pisigma_log info "Bootstrapping npm workspaces across microservices in $root_dir..."
+  if [[ -f "$root_dir/package.json" ]]; then
+    pisigma_run_in_dir "$root_dir" npm install --workspaces
+    pisigma_log info "npm workspace bootstrapping complete. Shared packages hoisted to root node_modules."
+  else
+    pisigma_log error "No root package.json found in $root_dir"
+    return 1
+  fi
+}
+
+pisigma_bootstrap_pnpm() {
+  local root_dir="${1:-$PWD}"
+  pisigma_log info "Bootstrapping pnpm workspace hardlink cache in $root_dir..."
+  if command -v pnpm >/dev/null 2>&1; then
+    pisigma_run_in_dir "$root_dir" pnpm install
+    pisigma_log info "pnpm workspace installation complete using global hardlink store."
+  else
+    pisigma_log warn "pnpm CLI not installed. Falling back to npm workspaces..."
+    pisigma_bootstrap_node_workspace "$root_dir"
+  fi
+}
+
+
 
