@@ -23,6 +23,14 @@ This repository contains shared infrastructure services for PiSigma / PlexApps p
 | MediaProcessing | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8802/health    | `PisigmaMediaProcessing` |
 | Discounts     | TypeScript/Hono + Cloudflare Workers | `npm run dev`           | http://127.0.0.1:8800/health    | `PisigmaDiscounts` |
 | Inventory     | TypeScript/Hono + Cloudflare Workers | `npm run dev`           | http://127.0.0.1:8801/health    | `PisigmaInventory` |
+| PromptManagement | TypeScript/Hono + Cloudflare Workers | `npm run dev`        | http://127.0.0.1:8808/health    | `PisigmaPromptManagement` |
+| LLMGuardrails | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8809/health    | `PisigmaLLMGuardrails` |
+| Experiments   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8806/health    | `PisigmaExperiments` |
+| Feedback      | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8807/health    | `PisigmaFeedback` |
+| Realtime      | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8810/health    | `PisigmaRealtime` |
+| APIGenerator  | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8803/health    | `PisigmaAPIGenerator` |
+| APITester     | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8804/health    | `PisigmaAPITester` |
+| ErrorTracking | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8805/health    | `PisigmaErrorTracking` |
 
 ## Language & Interoperability Architecture
 
@@ -41,6 +49,8 @@ This repository contains shared infrastructure services for PiSigma / PlexApps p
 - `./audit_all.sh` — audit npm/python dependencies for vulnerabilities (pass `--fix` to auto-remediate).
 - `./scan_secrets.sh` — scan repository for hardcoded secrets, tokens, or committed `.env` files.
 - `./security_check.sh` — run static frontend security checks and TypeScript typechecks (`tsc --noEmit`).
+- `./manage_deps.sh` — inspect disk usage (`status`), prune `.wrangler`/`__pycache__` build caches (`prune`), deduplicate packages (`dedupe`), or bootstrap a single shared Python venv (`shared-venv`).
+
 
 ## Service Conventions
 

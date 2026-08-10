@@ -1,0 +1,7 @@
+name = "pisigma-error-tracking"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ERRORTRACKING_ENV = "development"

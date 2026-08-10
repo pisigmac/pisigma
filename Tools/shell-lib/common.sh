@@ -459,3 +459,56 @@ pisigma_check_outdated() {
   fi
 }
 
+pisigma_bootstrap_shared_venv() {
+  local venv_path="${1:-$PWD/.pisigma/shared_venv}"
+  pisigma_log info "Bootstrapping shared Python virtual environment at $venv_path..."
+  if [[ ! -d "$venv_path" ]]; then
+    python3 -m venv "$venv_path"
+    pisigma_log info "Created shared Python venv at $venv_path"
+  fi
+  "$venv_path/bin/pip" install --upgrade pip setuptools wheel >/dev/null 2>&1 || true
+  if [[ -f "$PWD/Auth/requirements.txt" ]]; then
+    "$venv_path/bin/pip" install -r "$PWD/Auth/requirements.txt" >/dev/null 2>&1 || true
+  fi
+  pisigma_log info "Shared Python virtual environment ready at $venv_path"
+}
+
+pisigma_prune_caches() {
+  local root_dir="${1:-$PWD}"
+  pisigma_log info "Pruning temporary build caches, __pycache__, .pytest_cache, and .wrangler in $root_dir..."
+  find "$root_dir" -type d \( -name "__pycache__" -o -name ".pytest_cache" -o -name ".wrangler" -o -name ".nyc_output" -o -name "coverage" \) -exec rm -rf {} + 2>/dev/null || true
+  find "$root_dir" -type f \( -name "*.pyc" -o -name "*.pyo" -o -name "*.log" \) -delete 2>/dev/null || true
+  pisigma_log info "Cache pruning complete"
+}
+
+pisigma_report_disk_usage() {
+  local root_dir="${1:-$PWD}"
+  pisigma_log info "Analyzing dependency disk usage across microservices in $root_dir..."
+  echo ""
+  printf "%-30s %-15s %-15s\n" "MICROSERVICE / PATH" "NODE_MODULES" "VENV / CACHE"
+  printf "%-30s %-15s %-15s\n" "------------------------------" "---------------" "---------------"
+
+  for dir in "$root_dir"/*; do
+    [[ -d "$dir" ]] || continue
+    local name
+    name="$(basename "$dir")"
+    [[ "$name" == "node_modules" || "$name" == ".git" || "$name" == ".pisigma" ]] && continue
+
+    local nm_size="0 B"
+    local venv_size="0 B"
+
+    if [[ -d "$dir/node_modules" ]]; then
+      nm_size="$(du -sh "$dir/node_modules" 2>/dev/null | cut -f1)"
+    fi
+    if [[ -d "$dir/.venv" || -d "$dir/venv" ]]; then
+      venv_size="$(du -sh "$dir/.venv" "$dir/venv" 2>/dev/null | head -n1 | cut -f1)"
+    fi
+
+    if [[ "$nm_size" != "0 B" || "$venv_size" != "0 B" ]]; then
+      printf "%-30s %-15s %-15s\n" "$name" "$nm_size" "$venv_size"
+    fi
+  done
+  echo ""
+}
+
+

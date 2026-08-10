@@ -1,0 +1,22 @@
+{
+  "name": "pisigma-error-tracking",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PiSigma error tracking and exception report aggregation microservice",
+  "scripts": {
+    "dev": "wrangler dev --port 8805",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.7.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250224.0",
+    "typescript": "^5.7.3",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.120.0"
+  }
+}

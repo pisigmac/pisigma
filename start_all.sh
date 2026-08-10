@@ -26,5 +26,13 @@ pisigma_start_service "discounts"     "$ROOT/Discounts"     "npm run dev"
 pisigma_start_service "inventory"     "$ROOT/Inventory"     "npm run dev"
 pisigma_start_service "sso"           "$ROOT/SSO"           "npm run dev"
 pisigma_start_service "rbac"          "$ROOT/RBAC"          "npm run dev"
+pisigma_start_service "promptmanagement" "$ROOT/PromptManagement" "npm run dev"
+pisigma_start_service "llmguardrails" "$ROOT/LLMGuardrails" "npm run dev"
+pisigma_start_service "apigenerator"  "$ROOT/APIGenerator"  "npm run dev"
+pisigma_start_service "apitester"     "$ROOT/APITester"     "npm run dev"
+pisigma_start_service "errortracking" "$ROOT/ErrorTracking" "npm run dev"
+pisigma_start_service "experiments"   "$ROOT/Experiments"   "npm run dev"
+pisigma_start_service "feedback"      "$ROOT/Feedback"      "npm run dev"
+pisigma_start_service "realtime"      "$ROOT/Realtime"      "npm run dev"
 
 pisigma_service_status

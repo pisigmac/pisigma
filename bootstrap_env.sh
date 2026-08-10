@@ -5,7 +5,7 @@ source "$ROOT/Tools/shell-lib/common.sh"
 
 pisigma_log info "Bootstrapping environment files..."
 
-for svc in Auth Billing Mail Webhooks Storage Notifications FeatureFlags Analytics AuditLogs Localization MediaProcessing SSO RBAC Discounts Inventory; do
+for svc in Auth Billing Mail Webhooks Storage Notifications FeatureFlags Analytics AuditLogs Localization MediaProcessing SSO RBAC Discounts Inventory PromptManagement LLMGuardrails APIGenerator APITester ErrorTracking Experiments Feedback Realtime; do
   dir="$ROOT/$svc"
   [[ -d "$dir" ]] || continue
   if [[ -f "$dir/.env.example" ]]; then

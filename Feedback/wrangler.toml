@@ -1,0 +1,7 @@
+name = "pisigma-feedback"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+FEEDBACK_ENV = "development"

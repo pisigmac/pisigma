@@ -18,5 +18,13 @@ pisigma_test_all \
   "$ROOT/Discounts" \
   "$ROOT/Inventory" \
   "$ROOT/SSO" \
-  "$ROOT/RBAC"
+  "$ROOT/RBAC" \
+  "$ROOT/PromptManagement" \
+  "$ROOT/LLMGuardrails" \
+  "$ROOT/APIGenerator" \
+  "$ROOT/APITester" \
+  "$ROOT/ErrorTracking" \
+  "$ROOT/Experiments" \
+  "$ROOT/Feedback" \
+  "$ROOT/Realtime"
 

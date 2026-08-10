@@ -26,6 +26,14 @@ import { PisigmaDiscounts } from '../../Discounts/src/client'
 import { PisigmaInventory } from '../../Inventory/src/client'
 import { PisigmaSSO } from '../../SSO/src/client'
 import { PisigmaRBAC } from '../../RBAC/src/client'
+import { PisigmaPromptManagement } from '../../PromptManagement/src/client'
+import { PisigmaLLMGuardrails } from '../../LLMGuardrails/src/client'
+import { PisigmaAPIGenerator } from '../../APIGenerator/src/client'
+import { PisigmaAPITester } from '../../APITester/src/client'
+import { PisigmaErrorTracking } from '../../ErrorTracking/src/client'
+import { PisigmaExperiments } from '../../Experiments/src/client'
+import { PisigmaFeedback } from '../../Feedback/src/client'
+import { PisigmaRealtime } from '../../Realtime/src/client'
 
 export {
   PisigmaAuth,
@@ -45,6 +53,14 @@ export {
   PisigmaInventory,
   PisigmaSSO,
   PisigmaRBAC,
+  PisigmaPromptManagement,
+  PisigmaLLMGuardrails,
+  PisigmaAPIGenerator,
+  PisigmaAPITester,
+  PisigmaErrorTracking,
+  PisigmaExperiments,
+  PisigmaFeedback,
+  PisigmaRealtime,
 }
 
 export type ClientResult<T> =
@@ -69,6 +85,14 @@ export type PisigmaServiceName =
   | 'inventory'
   | 'sso'
   | 'rbac'
+  | 'promptManagement'
+  | 'llmGuardrails'
+  | 'apiGenerator'
+  | 'apiTester'
+  | 'errorTracking'
+  | 'experiments'
+  | 'feedback'
+  | 'realtime'
 
 export interface PisigmaClientConfig {
   /** Optional custom base URL mapping for individual services */
@@ -101,6 +125,14 @@ const DEFAULT_PORTS: Record<PisigmaServiceName, number> = {
   mediaProcessing: 8802,
   discounts: 8800,
   inventory: 8801,
+  promptManagement: 8808,
+  llmGuardrails: 8809,
+  apiGenerator: 8803,
+  apiTester: 8804,
+  errorTracking: 8805,
+  experiments: 8806,
+  feedback: 8807,
+  realtime: 8810,
 }
 
 export class PisigmaClient {
@@ -121,6 +153,14 @@ export class PisigmaClient {
   readonly inventory: PisigmaInventory
   readonly sso: PisigmaSSO
   readonly rbac: PisigmaRBAC
+  readonly promptManagement: PisigmaPromptManagement
+  readonly llmGuardrails: PisigmaLLMGuardrails
+  readonly apiGenerator: PisigmaAPIGenerator
+  readonly apiTester: PisigmaAPITester
+  readonly errorTracking: PisigmaErrorTracking
+  readonly experiments: PisigmaExperiments
+  readonly feedback: PisigmaFeedback
+  readonly realtime: PisigmaRealtime
 
   constructor(config: PisigmaClientConfig = {}) {
     const host = (config.host || 'http://127.0.0.1').replace(/\/$/, '')
@@ -148,6 +188,14 @@ export class PisigmaClient {
     this.inventory = new PisigmaInventory({ baseUrl: getUrl('inventory'), apiKey, fetch: fetchFn })
     this.sso = new PisigmaSSO({ baseUrl: getUrl('sso'), apiKey, fetch: fetchFn })
     this.rbac = new PisigmaRBAC({ baseUrl: getUrl('rbac'), apiKey, fetch: fetchFn })
+    this.promptManagement = new PisigmaPromptManagement({ baseUrl: getUrl('promptManagement'), apiKey, fetch: fetchFn })
+    this.llmGuardrails = new PisigmaLLMGuardrails({ baseUrl: getUrl('llmGuardrails'), apiKey, fetch: fetchFn })
+    this.apiGenerator = new PisigmaAPIGenerator({ baseUrl: getUrl('apiGenerator'), apiKey, fetch: fetchFn })
+    this.apiTester = new PisigmaAPITester({ baseUrl: getUrl('apiTester'), apiKey, fetch: fetchFn })
+    this.errorTracking = new PisigmaErrorTracking({ baseUrl: getUrl('errorTracking'), apiKey, fetch: fetchFn })
+    this.experiments = new PisigmaExperiments({ baseUrl: getUrl('experiments'), apiKey, fetch: fetchFn })
+    this.feedback = new PisigmaFeedback({ baseUrl: getUrl('feedback'), apiKey, fetch: fetchFn })
+    this.realtime = new PisigmaRealtime({ baseUrl: getUrl('realtime'), apiKey, fetch: fetchFn })
   }
 }
 
@@ -157,5 +205,6 @@ export class PisigmaClient {
 export function createPisigmaClient(config: PisigmaClientConfig = {}): PisigmaClient {
   return new PisigmaClient(config)
 }
+
 
 

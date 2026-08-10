@@ -1,0 +1,7 @@
+name = "pisigma-experiments"
+main = "src/index.ts"
+compatibility_date = "2025-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+EXPERIMENTS_ENV = "development"
