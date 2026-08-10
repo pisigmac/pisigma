@@ -1,0 +1,20 @@
+{
+  "name": "pisigma-consentmanager",
+  "version": "1.0.0",
+  "description": "ConsentManager microservice",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev --port 8819",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.0.0",
+    "hono": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^0.30.0",
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "hono": "^3.0.0"
+  }
+}

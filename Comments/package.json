@@ -1,0 +1,14 @@
+{
+  "name": "pisigma-comments",
+  "scripts": {
+    "dev": "wrangler dev --port 8831",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231025.0",
+    "hono": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "wrangler": "^3.0.0"
+  }
+}

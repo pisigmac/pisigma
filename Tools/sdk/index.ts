@@ -34,6 +34,27 @@ import { PisigmaErrorTracking } from '../../ErrorTracking/src/client'
 import { PisigmaExperiments } from '../../Experiments/src/client'
 import { PisigmaFeedback } from '../../Feedback/src/client'
 import { PisigmaRealtime } from '../../Realtime/src/client'
+import { PisigmaRateLimiter } from '../../RateLimiter/src/client'
+import { PisigmaCache } from '../../Cache/src/client'
+import { PisigmaQueueBroker } from '../../QueueBroker/src/client'
+import { PisigmaConfigVault } from '../../ConfigVault/src/client'
+import { PisigmaAPIGateway } from '../../APIGateway/src/client'
+import { PisigmaLogAggregator } from '../../LogAggregator/src/client'
+import { PisigmaDataPipeline } from '../../DataPipeline/src/client'
+import { PisigmaVectorSearch } from '../../VectorSearch/src/client'
+import { PisigmaConsentManager } from '../../ConsentManager/src/client'
+import { PisigmaDataRetention } from '../../DataRetention/src/client'
+import { PisigmaSMS } from '../../SMS/src/client'
+import { PisigmaChat } from '../../Chat/src/client'
+import { PisigmaMFA } from '../../MFA/src/client'
+import { PisigmaWAF } from '../../WAF/src/client'
+import { PisigmaSubscriptions } from '../../Subscriptions/src/client'
+import { PisigmaInvoicing } from '../../Invoicing/src/client'
+import { PisigmaReferrals } from '../../Referrals/src/client'
+import { PisigmaWorkflows } from '../../Workflows/src/client'
+import { PisigmaCMS } from '../../CMS/src/client'
+import { PisigmaFormBuilder } from '../../FormBuilder/src/client'
+import { PisigmaComments } from '../../Comments/src/client'
 
 export {
   PisigmaAuth,
@@ -61,6 +82,27 @@ export {
   PisigmaExperiments,
   PisigmaFeedback,
   PisigmaRealtime,
+  PisigmaRateLimiter,
+  PisigmaCache,
+  PisigmaQueueBroker,
+  PisigmaConfigVault,
+  PisigmaAPIGateway,
+  PisigmaLogAggregator,
+  PisigmaDataPipeline,
+  PisigmaVectorSearch,
+  PisigmaConsentManager,
+  PisigmaDataRetention,
+  PisigmaSMS,
+  PisigmaChat,
+  PisigmaMFA,
+  PisigmaWAF,
+  PisigmaSubscriptions,
+  PisigmaInvoicing,
+  PisigmaReferrals,
+  PisigmaWorkflows,
+  PisigmaCMS,
+  PisigmaFormBuilder,
+  PisigmaComments,
 }
 
 export type ClientResult<T> =
@@ -93,6 +135,27 @@ export type PisigmaServiceName =
   | 'experiments'
   | 'feedback'
   | 'realtime'
+  | 'rateLimiter'
+  | 'cache'
+  | 'queueBroker'
+  | 'configVault'
+  | 'apiGateway'
+  | 'logAggregator'
+  | 'dataPipeline'
+  | 'vectorSearch'
+  | 'consentManager'
+  | 'dataRetention'
+  | 'sms'
+  | 'chat'
+  | 'mfa'
+  | 'waf'
+  | 'subscriptions'
+  | 'invoicing'
+  | 'referrals'
+  | 'workflows'
+  | 'cms'
+  | 'formBuilder'
+  | 'comments'
 
 export interface PisigmaClientConfig {
   /** Optional custom base URL mapping for individual services */
@@ -133,6 +196,27 @@ const DEFAULT_PORTS: Record<PisigmaServiceName, number> = {
   experiments: 8806,
   feedback: 8807,
   realtime: 8810,
+  rateLimiter: 8811,
+  cache: 8816,
+  queueBroker: 8815,
+  configVault: 8812,
+  apiGateway: 8813,
+  logAggregator: 8814,
+  dataPipeline: 8817,
+  vectorSearch: 8818,
+  consentManager: 8819,
+  dataRetention: 8820,
+  sms: 8821,
+  chat: 8822,
+  mfa: 8823,
+  waf: 8824,
+  subscriptions: 8825,
+  invoicing: 8826,
+  referrals: 8827,
+  workflows: 8828,
+  cms: 8829,
+  formBuilder: 8830,
+  comments: 8831,
 }
 
 export class PisigmaClient {
@@ -161,6 +245,27 @@ export class PisigmaClient {
   readonly experiments: PisigmaExperiments
   readonly feedback: PisigmaFeedback
   readonly realtime: PisigmaRealtime
+  readonly rateLimiter: PisigmaRateLimiter
+  readonly cache: PisigmaCache
+  readonly queueBroker: PisigmaQueueBroker
+  readonly configVault: PisigmaConfigVault
+  readonly apiGateway: PisigmaAPIGateway
+  readonly logAggregator: PisigmaLogAggregator
+  readonly dataPipeline: PisigmaDataPipeline
+  readonly vectorSearch: PisigmaVectorSearch
+  readonly consentManager: PisigmaConsentManager
+  readonly dataRetention: PisigmaDataRetention
+  readonly sms: PisigmaSMS
+  readonly chat: PisigmaChat
+  readonly mfa: PisigmaMFA
+  readonly waf: PisigmaWAF
+  readonly subscriptions: PisigmaSubscriptions
+  readonly invoicing: PisigmaInvoicing
+  readonly referrals: PisigmaReferrals
+  readonly workflows: PisigmaWorkflows
+  readonly cms: PisigmaCMS
+  readonly formBuilder: PisigmaFormBuilder
+  readonly comments: PisigmaComments
 
   constructor(config: PisigmaClientConfig = {}) {
     const host = (config.host || 'http://127.0.0.1').replace(/\/$/, '')
@@ -196,6 +301,27 @@ export class PisigmaClient {
     this.experiments = new PisigmaExperiments({ baseUrl: getUrl('experiments'), apiKey, fetch: fetchFn })
     this.feedback = new PisigmaFeedback({ baseUrl: getUrl('feedback'), apiKey, fetch: fetchFn })
     this.realtime = new PisigmaRealtime({ baseUrl: getUrl('realtime'), apiKey, fetch: fetchFn })
+    this.rateLimiter = new PisigmaRateLimiter({ baseUrl: getUrl('rateLimiter'), apiKey, fetch: fetchFn })
+    this.cache = new PisigmaCache({ baseUrl: getUrl('cache'), apiKey, fetch: fetchFn })
+    this.queueBroker = new PisigmaQueueBroker({ baseUrl: getUrl('queueBroker'), apiKey, fetch: fetchFn })
+    this.configVault = new PisigmaConfigVault({ baseUrl: getUrl('configVault'), apiKey, fetch: fetchFn })
+    this.apiGateway = new PisigmaAPIGateway({ baseUrl: getUrl('apiGateway'), apiKey, fetch: fetchFn })
+    this.logAggregator = new PisigmaLogAggregator({ baseUrl: getUrl('logAggregator'), apiKey, fetch: fetchFn })
+    this.dataPipeline = new PisigmaDataPipeline({ baseUrl: getUrl('dataPipeline'), apiKey, fetch: fetchFn })
+    this.vectorSearch = new PisigmaVectorSearch({ baseUrl: getUrl('vectorSearch'), apiKey, fetch: fetchFn })
+    this.consentManager = new PisigmaConsentManager({ baseUrl: getUrl('consentManager'), apiKey, fetch: fetchFn })
+    this.dataRetention = new PisigmaDataRetention({ baseUrl: getUrl('dataRetention'), apiKey, fetch: fetchFn })
+    this.sms = new PisigmaSMS({ baseUrl: getUrl('sms'), apiKey, fetch: fetchFn })
+    this.chat = new PisigmaChat({ baseUrl: getUrl('chat'), apiKey, fetch: fetchFn })
+    this.mfa = new PisigmaMFA({ baseUrl: getUrl('mfa'), apiKey, fetch: fetchFn })
+    this.waf = new PisigmaWAF({ baseUrl: getUrl('waf'), apiKey, fetch: fetchFn })
+    this.subscriptions = new PisigmaSubscriptions({ baseUrl: getUrl('subscriptions'), apiKey, fetch: fetchFn })
+    this.invoicing = new PisigmaInvoicing({ baseUrl: getUrl('invoicing'), apiKey, fetch: fetchFn })
+    this.referrals = new PisigmaReferrals({ baseUrl: getUrl('referrals'), apiKey, fetch: fetchFn })
+    this.workflows = new PisigmaWorkflows({ baseUrl: getUrl('workflows'), apiKey, fetch: fetchFn })
+    this.cms = new PisigmaCMS({ baseUrl: getUrl('cms'), apiKey, fetch: fetchFn })
+    this.formBuilder = new PisigmaFormBuilder({ baseUrl: getUrl('formBuilder'), apiKey, fetch: fetchFn })
+    this.comments = new PisigmaComments({ baseUrl: getUrl('comments'), apiKey, fetch: fetchFn })
   }
 }
 

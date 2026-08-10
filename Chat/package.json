@@ -1,0 +1,14 @@
+{
+  "name": "pisigma-chat",
+  "scripts": {
+    "dev": "wrangler dev --port 8822",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "@cloudflare/workers-types": "^4.20231025.0",
+    "vitest": "^0.34.6",
+    "typescript": "^5.2.2",
+    "hono": "^3.9.2"
+  }
+}

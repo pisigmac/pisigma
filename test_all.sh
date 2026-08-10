@@ -12,6 +12,8 @@ pisigma_test_all \
   "$ROOT/Notifications" \
   "$ROOT/FeatureFlags" \
   "$ROOT/Analytics" \
+  "$ROOT/Search" \
+  "$ROOT/Scheduler" \
   "$ROOT/AuditLogs" \
   "$ROOT/Localization" \
   "$ROOT/MediaProcessing" \
@@ -26,5 +28,27 @@ pisigma_test_all \
   "$ROOT/ErrorTracking" \
   "$ROOT/Experiments" \
   "$ROOT/Feedback" \
-  "$ROOT/Realtime"
+  "$ROOT/Realtime" \
+  "$ROOT/RateLimiter" \
+  "$ROOT/Cache" \
+  "$ROOT/QueueBroker" \
+  "$ROOT/ConfigVault" \
+  "$ROOT/APIGateway" \
+  "$ROOT/LogAggregator" \
+  "$ROOT/DataPipeline" \
+  "$ROOT/VectorSearch" \
+  "$ROOT/ConsentManager" \
+  "$ROOT/DataRetention" \
+  "$ROOT/SMS" \
+  "$ROOT/Chat" \
+  "$ROOT/MFA" \
+  "$ROOT/WAF" \
+  "$ROOT/Subscriptions" \
+  "$ROOT/Invoicing" \
+  "$ROOT/Referrals" \
+  "$ROOT/Workflows" \
+  "$ROOT/CMS" \
+  "$ROOT/FormBuilder" \
+  "$ROOT/Comments"
+
 
