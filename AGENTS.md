@@ -31,6 +31,42 @@ This repository contains shared infrastructure services for PiSigma / PlexApps p
 | APIGenerator  | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8803/health    | `PisigmaAPIGenerator` |
 | APITester     | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8804/health    | `PisigmaAPITester` |
 | ErrorTracking | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8805/health    | `PisigmaErrorTracking` |
+| RateLimiter   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8811/health    | `PisigmaRateLimiter` |
+| ConfigVault   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8812/health    | `PisigmaConfigVault` |
+| APIGateway    | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8813/health    | `PisigmaAPIGateway` |
+| LogAggregator | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8814/health    | `PisigmaLogAggregator` |
+| QueueBroker   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8815/health    | `PisigmaQueueBroker` |
+| Cache         | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8816/health    | `PisigmaCache` |
+| DataPipeline  | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8817/health    | `PisigmaDataPipeline` |
+| VectorSearch  | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8818/health    | `PisigmaVectorSearch` |
+| ConsentManager| TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8819/health    | `PisigmaConsentManager` |
+| DataRetention | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8820/health    | `PisigmaDataRetention` |
+| SMS           | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8821/health    | `PisigmaSMS` |
+| Chat          | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8822/health    | `PisigmaChat` |
+| MFA           | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8823/health    | `PisigmaMFA` |
+| WAF           | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8824/health    | `PisigmaWAF` |
+| Subscriptions | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8825/health    | `PisigmaSubscriptions` |
+| Invoicing     | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8826/health    | `PisigmaInvoicing` |
+| Referrals     | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8827/health    | `PisigmaReferrals` |
+| Workflows     | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8828/health    | `PisigmaWorkflows` |
+| CMS           | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8829/health    | `PisigmaCMS` |
+| FormBuilder   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8830/health    | `PisigmaFormBuilder` |
+| Comments      | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8831/health    | `PisigmaComments` |
+| TestDataFactory| TypeScript/Hono + Cloudflare Workers| `npm run dev`         | http://127.0.0.1:8832/health    | `PisigmaTestDataFactory` |
+| ServiceRegistry| TypeScript/Hono + Cloudflare Workers| `npm run dev`         | http://127.0.0.1:8833/health    | `PisigmaServiceRegistry` |
+| MockServer    | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8834/health    | `PisigmaMockServer` |
+| DebugProxy    | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8835/health    | `PisigmaDebugProxy` |
+| ContractTester| TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8836/health    | `PisigmaContractTester` |
+| TestReporter  | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8837/health    | `PisigmaTestReporter` |
+| ReportBuilder | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8838/health    | `PisigmaReportBuilder` |
+| AlertEngine   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8839/health    | `PisigmaAlertEngine` |
+| SchemaRegistry| TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8840/health    | `PisigmaSchemaRegistry` |
+| DataQuality   | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8841/health    | `PisigmaDataQuality` |
+| ModelRegistry | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8842/health    | `PisigmaModelRegistry` |
+| EvalRunner    | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8843/health    | `PisigmaEvalRunner` |
+| EmbeddingService| TypeScript/Hono + Cloudflare Workers| `npm run dev`         | http://127.0.0.1:8844/health    | `PisigmaEmbeddingService` |
+| IncidentManager| TypeScript/Hono + Cloudflare Workers| `npm run dev`         | http://127.0.0.1:8845/health    | `PisigmaIncidentManager` |
+| StatusPage    | TypeScript/Hono + Cloudflare Workers | `npm run dev`         | http://127.0.0.1:8846/health    | `PisigmaStatusPage` |
 
 ## Language & Interoperability Architecture
 
@@ -40,10 +76,10 @@ This repository contains shared infrastructure services for PiSigma / PlexApps p
 
 ## Shared Dev Tools & Root Scripts
 
-- `./start_all.sh` — start all 12 microservices.
+- `./start_all.sh` — start all microservices.
 - `./stop_all.sh` — stop all services.
 - `./status.sh` — show running/stopped state.
-- `./test_all.sh` — run test suites for all 12 services.
+- `./test_all.sh` — run test suites for all 61 services.
 - `./migrate_all.sh` — apply local dev migrations.
 - `./bootstrap_env.sh` — copy `.env.example` to `.env` / `.dev.vars` where missing.
 - `./audit_all.sh` — audit npm/python dependencies for vulnerabilities (pass `--fix` to auto-remediate).

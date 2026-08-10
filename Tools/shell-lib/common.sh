@@ -96,8 +96,9 @@ pisigma_start_service() {
   fi
   local original_dir="$PWD"
   cd "$dir" || { pisigma_log error "Cannot cd to $dir"; return 1; }
-  eval "$*" >/dev/null 2>&1 &
+  setsid nohup bash -c "tail -f /dev/null | exec $*" >/dev/null 2>&1 &
   local pid=$!
+  disown $pid 2>/dev/null || true
   cd "$original_dir" || true
   echo "$pid" > "$pidfile"
   printf '%s\n' "${name}|${dir}|$*|$(date +%s)" >> "$PISIGMA_DEV_DIR/registry"
@@ -117,7 +118,8 @@ pisigma_stop_service() {
     kill "$pid" 2>/dev/null || true
     pisigma_log info "Stopped $name (pid $pid)"
   else
-    pisigma_log warn "Service not running: $name"
+    pkill -f "$name" 2>/dev/null || true
+    pisigma_log warn "Service stopped: $name"
   fi
   rm -f "$pidfile"
 }
@@ -135,26 +137,124 @@ pisigma_stop_all() {
 }
 
 pisigma_service_status() {
-  if [[ ! -d "$PISIGMA_DEV_DIR" ]]; then
-    pisigma_log info "No services tracked"
-    return 0
-  fi
+  local root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+  
+  printf "\n%-20s | %-10s | %-6s | %-32s | %-8s\n" "SERVICE" "STATUS" "PORT" "HEALTH ENDPOINT" "PID"
+  printf "%s\n" "---------------------+------------+--------+----------------------------------+---------"
+  
   local found=0
-  for pidfile in "$PISIGMA_DEV_DIR"/*.pid; do
-    [[ -f "$pidfile" ]] || continue
-    found=1
-    local name pid
-    name="$(basename "$pidfile" .pid)"
-    pid="$(cat "$pidfile")"
-    if kill -0 "$pid" 2>/dev/null; then
-      echo "  $name: running (pid $pid)"
-    else
-      echo "  $name: stopped (stale pid $pid)"
+  for dir in "$root_dir"/*/; do
+    [[ -d "$dir" ]] || continue
+    local sname
+    sname="$(basename "$dir")"
+    [[ "$sname" == "docs" || "$sname" == "node_modules" || "$sname" == "Tools" || "$sname" == "brain" ]] && continue
+    
+    local port=""
+    if [[ -f "$dir/package.json" ]]; then
+      port="$(grep -oE '\--port [0-9]+' "$dir/package.json" 2>/dev/null | head -n 1 | awk '{print $2}' || true)"
     fi
+    if [[ -z "$port" && -f "$dir/wrangler.toml" ]]; then
+      port="$(grep -oE 'port\s*=\s*[0-9]+' "$dir/wrangler.toml" 2>/dev/null | head -n 1 | awk -F'=' '{print $2}' | tr -d ' ' || true)"
+    fi
+    if [[ -z "$port" ]]; then
+      case "$sname" in
+        Auth) port="8090" ;;
+        Billing|Mail|Webhooks) port="8787" ;;
+        Storage) port="8790" ;;
+        Notifications) port="8791" ;;
+        FeatureFlags) port="8792" ;;
+        Analytics) port="8793" ;;
+        Search) port="8794" ;;
+        Scheduler) port="8795" ;;
+        AuditLogs) port="8796" ;;
+        Localization) port="8797" ;;
+        SSO) port="8798" ;;
+        RBAC) port="8799" ;;
+        Discounts) port="8800" ;;
+        Inventory) port="8801" ;;
+        MediaProcessing) port="8802" ;;
+        APIGenerator) port="8803" ;;
+        APITester) port="8804" ;;
+        ErrorTracking) port="8805" ;;
+        Experiments) port="8806" ;;
+        Feedback) port="8807" ;;
+        PromptManagement) port="8808" ;;
+        LLMGuardrails) port="8809" ;;
+        Realtime) port="8810" ;;
+        RateLimiter) port="8811" ;;
+        ConfigVault) port="8812" ;;
+        APIGateway) port="8813" ;;
+        LogAggregator) port="8814" ;;
+        QueueBroker) port="8815" ;;
+        Cache) port="8816" ;;
+        DataPipeline) port="8817" ;;
+        VectorSearch) port="8818" ;;
+        ConsentManager) port="8819" ;;
+        DataRetention) port="8820" ;;
+        SMS) port="8821" ;;
+        Chat) port="8822" ;;
+        MFA) port="8823" ;;
+        WAF) port="8824" ;;
+        Subscriptions) port="8825" ;;
+        Invoicing) port="8826" ;;
+        Referrals) port="8827" ;;
+        Workflows) port="8828" ;;
+        CMS) port="8829" ;;
+        FormBuilder) port="8830" ;;
+        Comments) port="8831" ;;
+        TestDataFactory) port="8832" ;;
+        ServiceRegistry) port="8833" ;;
+        MockServer) port="8834" ;;
+        DebugProxy) port="8835" ;;
+        ContractTester) port="8836" ;;
+        TestReporter) port="8837" ;;
+        ReportBuilder) port="8838" ;;
+        AlertEngine) port="8839" ;;
+        SchemaRegistry) port="8840" ;;
+        DataQuality) port="8841" ;;
+        ModelRegistry) port="8842" ;;
+        EvalRunner) port="8843" ;;
+        EmbeddingService) port="8844" ;;
+        IncidentManager) port="8845" ;;
+        StatusPage) port="8846" ;;
+        *) port="-" ;;
+      esac
+    fi
+
+    local health_url="http://127.0.0.1:${port}/health"
+    if [[ "$port" == "-" ]]; then
+      health_url="-"
+    fi
+
+    local pidfile="$PISIGMA_DEV_DIR/$(echo "$sname" | tr '[:upper:]' '[:lower:]').pid"
+    local pid="-"
+    if [[ -f "$pidfile" ]]; then
+      pid="$(cat "$pidfile" 2>/dev/null || echo "-")"
+    fi
+
+    local status="STOPPED"
+    if [[ "$port" != "-" ]] && curl -sf "$health_url" >/dev/null 2>&1; then
+      status="HEALTHY"
+    elif [[ "$pid" != "-" ]] && kill -0 "$pid" 2>/dev/null; then
+      status="RUNNING"
+    fi
+
+    local colored_status=""
+    case "$status" in
+      HEALTHY) colored_status="\033[0;32mHEALTHY   \033[0m" ;;
+      RUNNING) colored_status="\033[0;36mRUNNING   \033[0m" ;;
+      STOPPED) colored_status="\033[0;31mSTOPPED   \033[0m" ;;
+      *)       colored_status="\033[0;33mUNKNOWN   \033[0m" ;;
+    esac
+
+    printf "%-20s | %b | %-6s | %-32s | %-8s\n" "$sname" "$colored_status" "$port" "$health_url" "$pid"
+    found=1
   done
+  
   if [[ $found -eq 0 ]]; then
-    pisigma_log info "No services tracked"
+    pisigma_log info "No services found"
   fi
+  printf "\n"
 }
 
 pisigma_wait_for_url() {

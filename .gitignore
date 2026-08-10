@@ -40,3 +40,8 @@ Thumbs.db
 # Test Coverage
 coverage/
 .nyc_output/
+
+#agents
+.agents/
+.continue/
+skills-lock.json

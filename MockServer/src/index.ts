@@ -66,7 +66,7 @@ app.get('/v1/mocks/log', (c) => {
 });
 
 app.all('/proxy/*', async (c) => {
-  const path = '/' + c.req.param('0');
+  const path = c.req.path.replace(/^\/proxy/, '') || '/';
   const method = c.req.method;
 
   let matchedMock: MockDefinition | null = null;
@@ -106,7 +106,9 @@ app.all('/proxy/*', async (c) => {
     }
   }
 
-  return c.json(matchedMock.response_body, (matchedMock.response_status || 200) as any, matchedMock.response_headers);
+  const status = (matchedMock.response_status || 200) as any;
+  const headers = matchedMock.response_headers || {};
+  return c.json(matchedMock.response_body, status, headers);
 });
 
 export default app;

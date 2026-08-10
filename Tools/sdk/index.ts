@@ -55,6 +55,21 @@ import { PisigmaWorkflows } from '../../Workflows/src/client'
 import { PisigmaCMS } from '../../CMS/src/client'
 import { PisigmaFormBuilder } from '../../FormBuilder/src/client'
 import { PisigmaComments } from '../../Comments/src/client'
+import { PisigmaTestDataFactory } from '../../TestDataFactory/src/client'
+import { PisigmaServiceRegistry } from '../../ServiceRegistry/src/client'
+import { PisigmaMockServer } from '../../MockServer/src/client'
+import { PisigmaDebugProxy } from '../../DebugProxy/src/client'
+import { PisigmaContractTester } from '../../ContractTester/src/client'
+import { PisigmaTestReporter } from '../../TestReporter/src/client'
+import { PisigmaReportBuilder } from '../../ReportBuilder/src/client'
+import { PisigmaAlertEngine } from '../../AlertEngine/src/client'
+import { PisigmaSchemaRegistry } from '../../SchemaRegistry/src/client'
+import { PisigmaDataQuality } from '../../DataQuality/src/client'
+import { PisigmaModelRegistry } from '../../ModelRegistry/src/client'
+import { PisigmaEvalRunner } from '../../EvalRunner/src/client'
+import { PisigmaEmbeddingService } from '../../EmbeddingService/src/client'
+import { PisigmaIncidentManager } from '../../IncidentManager/src/client'
+import { PisigmaStatusPage } from '../../StatusPage/src/client'
 
 export {
   PisigmaAuth,
@@ -103,6 +118,21 @@ export {
   PisigmaCMS,
   PisigmaFormBuilder,
   PisigmaComments,
+  PisigmaTestDataFactory,
+  PisigmaServiceRegistry,
+  PisigmaMockServer,
+  PisigmaDebugProxy,
+  PisigmaContractTester,
+  PisigmaTestReporter,
+  PisigmaReportBuilder,
+  PisigmaAlertEngine,
+  PisigmaSchemaRegistry,
+  PisigmaDataQuality,
+  PisigmaModelRegistry,
+  PisigmaEvalRunner,
+  PisigmaEmbeddingService,
+  PisigmaIncidentManager,
+  PisigmaStatusPage,
 }
 
 export type ClientResult<T> =
@@ -156,6 +186,21 @@ export type PisigmaServiceName =
   | 'cms'
   | 'formBuilder'
   | 'comments'
+  | 'testDataFactory'
+  | 'serviceRegistry'
+  | 'mockServer'
+  | 'debugProxy'
+  | 'contractTester'
+  | 'testReporter'
+  | 'reportBuilder'
+  | 'alertEngine'
+  | 'schemaRegistry'
+  | 'dataQuality'
+  | 'modelRegistry'
+  | 'evalRunner'
+  | 'embeddingService'
+  | 'incidentManager'
+  | 'statusPage'
 
 export interface PisigmaClientConfig {
   /** Optional custom base URL mapping for individual services */
@@ -217,6 +262,21 @@ const DEFAULT_PORTS: Record<PisigmaServiceName, number> = {
   cms: 8829,
   formBuilder: 8830,
   comments: 8831,
+  testDataFactory: 8832,
+  serviceRegistry: 8833,
+  mockServer: 8834,
+  debugProxy: 8835,
+  contractTester: 8836,
+  testReporter: 8837,
+  reportBuilder: 8838,
+  alertEngine: 8839,
+  schemaRegistry: 8840,
+  dataQuality: 8841,
+  modelRegistry: 8842,
+  evalRunner: 8843,
+  embeddingService: 8844,
+  incidentManager: 8845,
+  statusPage: 8846,
 }
 
 export class PisigmaClient {
@@ -266,6 +326,21 @@ export class PisigmaClient {
   readonly cms: PisigmaCMS
   readonly formBuilder: PisigmaFormBuilder
   readonly comments: PisigmaComments
+  readonly testDataFactory: PisigmaTestDataFactory
+  readonly serviceRegistry: PisigmaServiceRegistry
+  readonly mockServer: PisigmaMockServer
+  readonly debugProxy: PisigmaDebugProxy
+  readonly contractTester: PisigmaContractTester
+  readonly testReporter: PisigmaTestReporter
+  readonly reportBuilder: PisigmaReportBuilder
+  readonly alertEngine: PisigmaAlertEngine
+  readonly schemaRegistry: PisigmaSchemaRegistry
+  readonly dataQuality: PisigmaDataQuality
+  readonly modelRegistry: PisigmaModelRegistry
+  readonly evalRunner: PisigmaEvalRunner
+  readonly embeddingService: PisigmaEmbeddingService
+  readonly incidentManager: PisigmaIncidentManager
+  readonly statusPage: PisigmaStatusPage
 
   constructor(config: PisigmaClientConfig = {}) {
     const host = (config.host || 'http://127.0.0.1').replace(/\/$/, '')
@@ -322,6 +397,21 @@ export class PisigmaClient {
     this.cms = new PisigmaCMS({ baseUrl: getUrl('cms'), apiKey, fetch: fetchFn })
     this.formBuilder = new PisigmaFormBuilder({ baseUrl: getUrl('formBuilder'), apiKey, fetch: fetchFn })
     this.comments = new PisigmaComments({ baseUrl: getUrl('comments'), apiKey, fetch: fetchFn })
+    this.testDataFactory = new PisigmaTestDataFactory({ baseUrl: getUrl('testDataFactory'), apiKey, fetch: fetchFn })
+    this.serviceRegistry = new PisigmaServiceRegistry({ baseUrl: getUrl('serviceRegistry'), apiKey, fetch: fetchFn })
+    this.mockServer = new PisigmaMockServer({ baseUrl: getUrl('mockServer'), apiKey, fetch: fetchFn })
+    this.debugProxy = new PisigmaDebugProxy({ baseUrl: getUrl('debugProxy'), apiKey, fetch: fetchFn })
+    this.contractTester = new PisigmaContractTester({ baseUrl: getUrl('contractTester'), apiKey, fetch: fetchFn })
+    this.testReporter = new PisigmaTestReporter({ baseUrl: getUrl('testReporter'), apiKey, fetch: fetchFn })
+    this.reportBuilder = new PisigmaReportBuilder({ baseUrl: getUrl('reportBuilder'), apiKey, fetch: fetchFn })
+    this.alertEngine = new PisigmaAlertEngine({ baseUrl: getUrl('alertEngine'), apiKey, fetch: fetchFn })
+    this.schemaRegistry = new PisigmaSchemaRegistry({ baseUrl: getUrl('schemaRegistry'), apiKey, fetch: fetchFn })
+    this.dataQuality = new PisigmaDataQuality({ baseUrl: getUrl('dataQuality'), apiKey, fetch: fetchFn })
+    this.modelRegistry = new PisigmaModelRegistry({ baseUrl: getUrl('modelRegistry'), apiKey, fetch: fetchFn })
+    this.evalRunner = new PisigmaEvalRunner({ baseUrl: getUrl('evalRunner'), apiKey, fetch: fetchFn })
+    this.embeddingService = new PisigmaEmbeddingService({ baseUrl: getUrl('embeddingService'), apiKey, fetch: fetchFn })
+    this.incidentManager = new PisigmaIncidentManager({ baseUrl: getUrl('incidentManager'), apiKey, fetch: fetchFn })
+    this.statusPage = new PisigmaStatusPage({ baseUrl: getUrl('statusPage'), apiKey, fetch: fetchFn })
   }
 }
 
@@ -331,6 +421,3 @@ export class PisigmaClient {
 export function createPisigmaClient(config: PisigmaClientConfig = {}): PisigmaClient {
   return new PisigmaClient(config)
 }
-
-
-

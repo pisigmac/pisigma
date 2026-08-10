@@ -4,7 +4,7 @@
   "description": "Embedding Service",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
+    "dev": "wrangler dev --port 8844",
     "deploy": "wrangler deploy --minify src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"

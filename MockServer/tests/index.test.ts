@@ -34,7 +34,7 @@ describe('MockServer', () => {
 
   it('Times = 1 works', async () => {
     await app.request('/v1/mocks/define', {
-      method: 'GET',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ method: 'GET', path: '/api/once', times: 1, response_body: { success: true } }),
     });
